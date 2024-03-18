@@ -10,11 +10,26 @@ import {
     findContainer
 } from "./utils/htmtElements";
 
+import doubleClickEvent from './utils/doubleClick.js'
+
+let lastKeyDownContainer = {lastKeyDown: null}
+document.body.addEventListener('keydown', (e) => {
+    if(e.key == 'F4')
+    {
+        doubleClickEvent(lastKeyDownContainer, () => {
+            if(interactiveBox.style.visibility != 'hidden')
+                interactiveBox.style.visibility = 'hidden'
+            else
+                interactiveBox.style.visibility = 'visible';
+        })
+    }
+})
+
 interactiveBox.appendChild(navBar);
 interactiveBox.appendChild(addContentContainer);
 interactiveBox.appendChild(findContainer);
 document.body.appendChild(interactiveBox);
-
+interactiveBox.style.visibility = 'hidden'
 
 button1.addEventListener('click', (e) => {
     findContainer.style.display = 'none';
