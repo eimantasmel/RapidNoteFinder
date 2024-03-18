@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "RapidNote Finder",
+  "version": "1.0.0",
+  "description": "It quickly will found your added notes",
+  "icons": {
+    "16": "./assets/img/icon.png",
+    "48": "./assets/img/icon.png",
+    "128": "./assets/img/icon.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "js": ["./dist/content_bundle.js"]
+    }
+  ]
+}
