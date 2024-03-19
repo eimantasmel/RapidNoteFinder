@@ -10,6 +10,61 @@
     <option name="highlightLevel" value="WARNING" />
     <option name="transferred" value="true" />
   </component>
+  <component name="PhpIncludePathManager">
+    <include_path>
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/symfony/routing" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/symfony/cache-contracts" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/symfony/polyfill-mbstring" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/symfony/deprecation-contracts" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/symfony/runtime" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/symfony/polyfill-intl-normalizer" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/symfony/polyfill-php83" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/symfony/cache" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/symfony/polyfill-intl-grapheme" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/symfony/doctrine-bridge" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/symfony/var-exporter" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/symfony/dependency-injection" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/symfony/config" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/symfony/event-dispatcher-contracts" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/symfony/error-handler" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/symfony/filesystem" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/symfony/console" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/symfony/maker-bundle" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/symfony/stopwatch" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/symfony/flex" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/symfony/event-dispatcher" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/symfony/var-dumper" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/symfony/http-foundation" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/symfony/framework-bundle" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/symfony/http-kernel" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/symfony/service-contracts" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/symfony/string" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/symfony/yaml" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/symfony/process" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/symfony/dotenv" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/symfony/finder" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/composer" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/doctrine/lexer" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/doctrine/deprecations" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/doctrine/event-manager" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/doctrine/instantiator" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/doctrine/dbal" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/psr/event-dispatcher" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/doctrine/cache" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/psr/cache" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/doctrine/orm" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/psr/log" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/doctrine/doctrine-bundle" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/psr/container" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/doctrine/collections" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/doctrine/persistence" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/doctrine/sql-formatter" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/doctrine/inflector" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/doctrine/migrations" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/doctrine/doctrine-migrations-bundle" />
+      <path value="$PROJECT_DIR$/RapidNoteFinderApi/vendor/nikic/php-parser" />
+    </include_path>
+  </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.1" />
   <component name="PhpStanOptionsConfiguration">
     <option name="transferred" value="true" />

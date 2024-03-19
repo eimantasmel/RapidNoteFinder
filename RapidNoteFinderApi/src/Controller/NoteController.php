@@ -12,16 +12,18 @@ class NoteController extends AbstractController
     #[Route('/note/add', name: 'add_note', methods: 'POST')]
     public function addNote(Request $request): JsonResponse
     {
-        $x = 5;
         $response = new JsonResponse([
             'message' => 'Welcome to your new controller!',
             'path' => 'src/Controller/NoteController.php',
         ]);
-
-        // Set CORS headers to allow requests from any origin
         $response->headers->set('Access-Control-Allow-Origin', '*');
         $response->headers->set('Access-Control-Allow-Methods', 'POST');
-        $response->headers->set('Access-Control-Allow-Headers', 'Content-Type');
+        $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, XMLHttpRequest, Authorization, X-Requested-With');
+        // Set CORS headers to allow requests from any origin
+
+//        $response->headers->set('Access-Control-Allow-Origin', '*');
+//        $response->headers->set('Access-Control-Allow-Methods', 'POST');
+//        $response->headers->set('Access-Control-Allow-Headers', 'Content-Type');
 
         return $response;
     }
