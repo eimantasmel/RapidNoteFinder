@@ -7,6 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: NoteRepository::class)]
+#[ORM\Table('Notes')]
 class Note
 {
     #[ORM\Id]
@@ -22,6 +23,9 @@ class Note
 
     #[ORM\Column(length: 255)]
     private ?string $associate = null;
+
+    #[ORM\Column(type: TYPES::DATETIME_IMMUTABLE, options: ['default' => 'CURRENT_TIMESTAMP'])]
+    private ?\DateTimeImmutable $created_at = null;
 
     public function getId(): ?int
     {
@@ -60,6 +64,27 @@ class Note
     public function setAssociate(string $associate): static
     {
         $this->associate = $associate;
+
+        return $this;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'content' => $this->content,
+            'description' => $this->description,
+            'associate' => $this->associate,
+        ];
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->created_at;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $created_at): static
+    {
+        $this->created_at = $created_at;
 
         return $this;
     }

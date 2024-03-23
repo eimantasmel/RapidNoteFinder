@@ -2,29 +2,46 @@
 
 namespace App\Controller;
 
+use App\Entity\Note;
+use App\Repository\NoteRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
+
 #[Route('/api', name: 'api_')]
 class NoteController extends AbstractController
 {
+    public function __construct(
+        private NoteRepository $noteRepository,
+        private EntityManagerInterface $em
+    ) {
+    }
+
     #[Route('/note/add', name: 'add_note', methods: 'POST')]
     public function addNote(Request $request): JsonResponse
     {
-        $response = new JsonResponse([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/NoteController.php',
-        ]);
-        $response->headers->set('Access-Control-Allow-Origin', '*');
-        $response->headers->set('Access-Control-Allow-Methods', 'POST');
-        $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, XMLHttpRequest, Authorization, X-Requested-With');
-        // Set CORS headers to allow requests from any origin
+        $data = json_decode($request->getContent());
+        try {
+            $note = $this->noteRepository
+                ->addNote($data->description, $data->content, 'pavargau');
 
-//        $response->headers->set('Access-Control-Allow-Origin', '*');
-//        $response->headers->set('Access-Control-Allow-Methods', 'POST');
-//        $response->headers->set('Access-Control-Allow-Headers', 'Content-Type');
+            return $this->json($note->toArray());
+        } catch (\Exception $e) {
+            return $this->json(['error' => $e->getMessage()], $e->getCode());
+        }
+    }
 
-        return $response;
+    #[Route('/note/find/{description}', name: 'find_note', methods: 'GET')]
+    public function findNote(Request $request, string $description): JsonResponse
+    {
+        try {
+            $note = $this->noteRepository
+                ->findNoteByDescription($description);
+            return $this->json($note->toArray());
+        } catch (\Exception $e) {
+            return $this->json(['error' => $e->getMessage()], $e->getCode());
+        }
     }
 }

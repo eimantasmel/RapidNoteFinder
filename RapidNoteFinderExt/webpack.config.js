@@ -22,7 +22,15 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: ['style-loader', 'css-loader']
-            }
+            },
+            // {
+            //     test: /\.js$/,
+            //     use: 'script-loader',
+            // },
         ]
+    },
+    performance: {
+        maxAssetSize: 1024 ** 3, // Increase asset size limit to 1 MB
+        maxEntrypointSize: 1024 ** 3, // Increase entrypoint size limit to 1 MB
     },
 };

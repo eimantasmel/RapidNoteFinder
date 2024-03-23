@@ -9,8 +9,8 @@ class NoteContext extends Component {
 
         this.state = {
             showBox: false,
-            showCreateCont: true,
-            showSearchCont: false,
+            showCreateCont: false,
+            showSearchCont: true,
             lastKeyDownContainer: {lastKeyDown: null}
         }
     }
@@ -33,8 +33,8 @@ class NoteContext extends Component {
 
     showSearchContainer() {
         this.setState({
-            showCreateCont: true,
-            showSearchCont: false,
+            showCreateCont: false,
+            showSearchCont: true,
         }, () => {
             document.querySelector('#showsearch').style.background = 'darkred'
             document.querySelector('#showcreate').style.background = 'deeppink'
@@ -42,18 +42,35 @@ class NoteContext extends Component {
     }
     showCreateContainer() {
         this.setState({
-            showCreateCont: false,
-            showSearchCont: true,
+            showCreateCont: true,
+            showSearchCont: false,
         }, () => {
             document.querySelector('#showsearch').style.background = 'deeppink'
             document.querySelector('#showcreate').style.background = 'darkred'
         })
     }
 
-    createNote() {
-        axios.post('/api/note/add')
-        .then(response => console.log(response))
-        .catch(err => console.log('pavargau ir tiek'))
+    createNote(content, description) {
+        axios.post('http://127.0.0.1:8000/api/note/add', {
+            content,
+            description
+        })
+        .then(response => {
+
+        })
+        .catch(err => console.log(err))
+    }
+
+    findNote(description) {
+        axios.get(`http://127.0.0.1:8000/api/note/find/${description}`, {
+            description
+        })
+        .then(response => {
+            const {content } = response.data;
+            let respondDiv = document.querySelector('#entrypoint .response');
+            respondDiv.innerHTML = content;
+        })
+        .catch(err => console.log(err))
     }
 
     render() {
@@ -63,6 +80,7 @@ class NoteContext extends Component {
             showCreateContainer: this.showCreateContainer.bind(this),
             showSearchContainer: this.showSearchContainer.bind(this),
             createNote: this.createNote.bind(this),
+            findNote: this.findNote.bind(this),
         }}>
             {this.props.children}
         </context.Provider>
