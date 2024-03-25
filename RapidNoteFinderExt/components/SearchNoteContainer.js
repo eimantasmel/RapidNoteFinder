@@ -23,7 +23,7 @@ function SearchNoteContainer(props) {
                     setDescription(e.target.value);
                 }}/>
                 <div className={'response'}></div>
-               <div id="editor"></div>
+               {/*<div id="editor"></div>*/}
             </div>
         );
 }

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import doubleClickEvent from "../scripts/doubleClick";
 import axios from 'axios';
+import getAssociation from "../scripts/getAssociation";
 export const context = React.createContext();
 class NoteContext extends Component {
 
@@ -50,10 +51,12 @@ class NoteContext extends Component {
         })
     }
 
-    createNote(content, description) {
+    async createNote(content, description) {
+        const associate = await getAssociation() ?? '';
         axios.post('http://127.0.0.1:8000/api/note/add', {
             content,
-            description
+            description,
+            associate,
         })
         .then(response => {
 
@@ -61,9 +64,13 @@ class NoteContext extends Component {
         .catch(err => console.log(err))
     }
 
-    findNote(description) {
-        axios.get(`http://127.0.0.1:8000/api/note/find/${description}`, {
-            description
+    async findNote(description) {
+        const associate = await getAssociation() ?? '';
+        axios.get(`http://127.0.0.1:8000/api/note/find`, {
+            params: {
+                description: description,
+                associate: associate
+            }
         })
         .then(response => {
             const {content } = response.data;

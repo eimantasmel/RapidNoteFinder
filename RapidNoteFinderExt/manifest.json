@@ -3,13 +3,14 @@
   "name": "RapidNote Finder",
   "version": "1.0.0",
   "description": "It quickly will found your added notes",
-  "host_permissions": [
-    "https://cdn.tiny.cloud/"
-  ],
+  "permissions": ["storage"],
   "icons": {
     "16": "./assets/img/icon.png",
     "48": "./assets/img/icon.png",
     "128": "./assets/img/icon.png"
+  },
+  "action": {
+    "default_popup": "popup.html"
   },
   "content_scripts": [
     {

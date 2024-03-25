@@ -40,11 +40,13 @@ class NoteRepository extends ServiceEntityRepository
         return $note;
     }
 
-    public function findNoteByDescription(string $description) : Note
+    public function findNoteByDescription(string $description, string $associate) : ?Note
     {
         return $this->createQueryBuilder('n')
             ->where("n.description like :val")
+            ->andWhere('n.associate = :val2')
             ->setParameter('val', '%' . $description . '%')
+            ->setParameter('val2', $associate )
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();

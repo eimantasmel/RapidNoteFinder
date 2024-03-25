@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/api', name: 'api_')]
@@ -25,21 +26,25 @@ class NoteController extends AbstractController
         $data = json_decode($request->getContent());
         try {
             $note = $this->noteRepository
-                ->addNote($data->description, $data->content, 'pavargau');
-
+                ->addNote($data->description, $data->content, $data->associate);
             return $this->json($note->toArray());
         } catch (\Exception $e) {
             return $this->json(['error' => $e->getMessage()], $e->getCode());
         }
     }
 
-    #[Route('/note/find/{description}', name: 'find_note', methods: 'GET')]
-    public function findNote(Request $request, string $description): JsonResponse
+    #[Route('/note/find', name: 'find_note', methods: 'GET')]
+    public function findNote(Request $request): JsonResponse
     {
+        $description = $request->query->get('description');
+        $associate = $request->query->get('associate');
         try {
             $note = $this->noteRepository
-                ->findNoteByDescription($description);
-            return $this->json($note->toArray());
+                ->findNoteByDescription($description, $associate);
+            if($note)
+                return $this->json($note->toArray());
+            else
+                return $this->json(['error' => 'note not found'], Response::HTTP_NOT_FOUND);
         } catch (\Exception $e) {
             return $this->json(['error' => $e->getMessage()], $e->getCode());
         }
