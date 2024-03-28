@@ -17,5 +17,17 @@
       "matches": ["*://*/*"],
       "js": ["./dist/content_bundle.js"]
     }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["assets/packages/summernote-bs4.min.js"],
+      "matches": ["*://*/*"]
+    },
+    {
+      "resources": ["assets/packages/jquery-3.6.0.min.js"],
+      "matches": ["*://*/*"]
+    }
   ]
 }
+
+

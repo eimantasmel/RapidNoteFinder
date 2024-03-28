@@ -1,4 +1,6 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackTagsPlugin = require('html-webpack-tags-plugin');
 
 module.exports = {
     mode: 'production',
@@ -23,14 +25,10 @@ module.exports = {
                 test: /\.css$/,
                 use: ['style-loader', 'css-loader']
             },
-            // {
-            //     test: /\.js$/,
-            //     use: 'script-loader',
-            // },
         ]
     },
-    // performance: {
-    //     maxAssetSize: 1024 ** 3, // Increase asset size limit to 1 MB
-    //     maxEntrypointSize: 1024 ** 3, // Increase entrypoint size limit to 1 MB
-    // },
+    performance: {
+        maxAssetSize: 1024 ** 3, // Increase asset size limit to 1 MB
+        maxEntrypointSize: 1024 ** 3, // Increase entrypoint size limit to 1 MB
+    },
 };

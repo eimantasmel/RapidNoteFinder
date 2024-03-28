@@ -64,7 +64,7 @@ class NoteContext extends Component {
         .catch(err => console.log(err))
     }
 
-    async findNote(description) {
+    async findNote(description, setEditorValue) {
         const associate = await getAssociation() ?? '';
         axios.get(`http://127.0.0.1:8000/api/note/find`, {
             params: {
@@ -74,8 +74,8 @@ class NoteContext extends Component {
         })
         .then(response => {
             const {content } = response.data;
-            let respondDiv = document.querySelector('#entrypoint .response');
-            respondDiv.innerHTML = content;
+            document.querySelector('.ext-container #quill-editor-wrapper').style.display = 'block';
+            setEditorValue(content);
         })
         .catch(err => console.log(err))
     }
