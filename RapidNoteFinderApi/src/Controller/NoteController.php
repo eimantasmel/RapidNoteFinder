@@ -33,6 +33,18 @@ class NoteController extends AbstractController
         }
     }
 
+    #[Route('/note/update/{id}', name: 'update_note', methods: 'POST', priority: 1)]
+    public function updateNote(Request $request, Note $note): JsonResponse
+    {
+        $data = json_decode($request->getContent());
+        try {
+            $note = $this->noteRepository->updateNote($note, $data->content);
+            return $this->json($note->toArray());
+        } catch (\Exception $e) {
+            return $this->json(['error' => $e->getMessage()], $e->getCode());
+        }
+    }
+
     #[Route('/note/find', name: 'find_note', methods: 'GET')]
     public function findNote(Request $request): JsonResponse
     {
@@ -44,7 +56,7 @@ class NoteController extends AbstractController
             if($note)
                 return $this->json($note->toArray());
             else
-                return $this->json(['error' => 'note not found'], Response::HTTP_NOT_FOUND);
+                return $this->json(['error' => 'note not found'], Response::HTTP_BAD_REQUEST);
         } catch (\Exception $e) {
             return $this->json(['error' => $e->getMessage()], $e->getCode());
         }

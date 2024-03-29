@@ -40,6 +40,18 @@ class NoteRepository extends ServiceEntityRepository
         return $note;
     }
 
+    public function updateNote(Note $note, string $content) : Note
+    {
+        if(empty($content))
+        {
+            throw new \Exception('Content cannot be empty', Response::HTTP_BAD_REQUEST);
+        }
+        $note->setContent($content);
+        $this->getEntityManager()->flush();
+
+        return $note;
+    }
+
     public function findNoteByDescription(string $description, string $associate) : ?Note
     {
         return $this->createQueryBuilder('n')

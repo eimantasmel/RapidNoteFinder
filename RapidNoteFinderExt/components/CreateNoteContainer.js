@@ -1,4 +1,4 @@
-import React, {useContext, useRef, useState} from 'react';
+import React, {useContext, useRef, useState, useEffect} from 'react';
 import {context} from '../contexts/NoteContext';
 import '../assets/css/create-note-container.css';
 import ReactQuill from 'react-quill';
@@ -24,14 +24,16 @@ function CreateNoteContainer(props) {
         editor.setSelection(range.index + 1, range.length);
     };
 
-    const {createNote} = useContext(context)
+    const {createNote} = useContext(context);
     const [description, setDescription] = useState('');
 
-    componentDidMount();
+    useEffect(() => {
+        componentDidMount();
+    })
         return (
             <div className={'create-note-container ext-container'}>
                 <input type="text" className={'description'} placeholder={'Your note description...'} value={description} onChange={(e) => setDescription(e.target.value)}/>
-                <div style={{ height: '400px', overflowY: 'auto', overflowX: 'auto', width: '100%' }}>
+                <div style={{ height: '400px', overflowY: 'auto', overflowX: 'auto', width: '100%', color: 'white' }}>
                     <ReactQuill value={editorValue} onChange={handleChange} onPaste={handlePaste}  ref={editorRef} placeholder={'Your note content...'} />
                 </div>
                 <button className={'save-btn'} onClick={() => {

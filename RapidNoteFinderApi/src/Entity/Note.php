@@ -74,6 +74,7 @@ class Note
             'content' => $this->content,
             'description' => $this->description,
             'associate' => $this->associate,
+            'noteId' => $this->id
         ];
     }
 
