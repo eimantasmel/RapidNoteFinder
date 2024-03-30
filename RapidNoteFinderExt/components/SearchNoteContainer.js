@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect, useRef } from 'react';
+import React, {useState, useContext, useEffect, useRef, useLayoutEffect  } from 'react';
 import {context} from "../contexts/NoteContext";
 import '../assets/css/search-note-container.css';
 import ReactQuill from 'react-quill';
@@ -14,17 +14,11 @@ function componentDidMount() {
 
 function SearchNoteContainer(props) {
     const [editorValue, setEditorValue] = useState('');
-    const [lastTimeoutId, setLastTimeoutId] = useState(0);
     const {findNote, updateNote} = useContext(context)
     const editorRef = useRef(null);
+    const editorValueRef = useRef('');
     const handleChange = (value) => {
-        console.log(value)
         setEditorValue(value);
-        clearTimeout(lastTimeoutId);
-        const id = setTimeout(() => {
-            updateNote(value);
-        }, 2000)
-        setLastTimeoutId(id);
     };
 
     const handlePaste = () => {
@@ -35,7 +29,18 @@ function SearchNoteContainer(props) {
 
     useEffect(() => {
         componentDidMount();
+        editorValueRef.current = editorValue;
     })
+
+    useLayoutEffect(() => {
+        // This function will be called when the component is mounted
+        return () => {
+            // This function will be called when the component is about to unmount
+            console.log(editorValueRef.current)
+            updateNote(editorValueRef.current);
+            console.log('Component is unmounting');
+        };
+    }, []);
 
     const [description, setDescription] = useState('');
         return (

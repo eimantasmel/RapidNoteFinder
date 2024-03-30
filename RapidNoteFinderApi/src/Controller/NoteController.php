@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Note;
 use App\Repository\NoteRepository;
+use App\Service\UploadedFileService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,7 +17,8 @@ class NoteController extends AbstractController
 {
     public function __construct(
         private NoteRepository $noteRepository,
-        private EntityManagerInterface $em
+        private EntityManagerInterface $em,
+        private UploadedFileService $fileService
     ) {
     }
 
@@ -25,20 +27,23 @@ class NoteController extends AbstractController
     {
         $data = json_decode($request->getContent());
         try {
+            $updatedContent = $this->fileService->handleNoteContent($data->content);
             $note = $this->noteRepository
-                ->addNote($data->description, $data->content, $data->associate);
+                ->addNote($data->description, $updatedContent, $data->associate);
             return $this->json($note->toArray());
         } catch (\Exception $e) {
             return $this->json(['error' => $e->getMessage()], $e->getCode());
         }
     }
 
-    #[Route('/note/update/{id}', name: 'update_note', methods: 'POST', priority: 1)]
+    #[Route('/note/update/{id}', name: 'update_note', methods: 'PUT', priority: 1)]
     public function updateNote(Request $request, Note $note): JsonResponse
     {
         $data = json_decode($request->getContent());
         try {
-            $note = $this->noteRepository->updateNote($note, $data->content);
+            $updatedContent = $this->fileService->handleNoteContent($data->content);
+            $this->fileService->removeChangedImages($updatedContent, $note->getContent());
+            $note = $this->noteRepository->updateNote($note, $updatedContent);
             return $this->json($note->toArray());
         } catch (\Exception $e) {
             return $this->json(['error' => $e->getMessage()], $e->getCode());
@@ -61,4 +66,7 @@ class NoteController extends AbstractController
             return $this->json(['error' => $e->getMessage()], $e->getCode());
         }
     }
+
+
+
 }

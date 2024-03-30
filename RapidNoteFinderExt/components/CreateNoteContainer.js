@@ -37,7 +37,6 @@ function CreateNoteContainer(props) {
                     <ReactQuill value={editorValue} onChange={handleChange} onPaste={handlePaste}  ref={editorRef} placeholder={'Your note content...'} />
                 </div>
                 <button className={'save-btn'} onClick={() => {
-                    setDescription('');
                     createNote(editorValue, description);
                 }}>Save</button>
             </div>

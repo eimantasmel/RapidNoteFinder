@@ -66,7 +66,7 @@ class NoteContext extends Component {
 
     updateNote(content) {
         const noteId = document.getElementById('note-id').dataset.noteId;
-        axios.post(`http://127.0.0.1:8000/api/note/update/${noteId}`, {
+        axios.put(`http://127.0.0.1:8000/api/note/update/${noteId}`, {
             content,
         })
         .catch(err => console.log(err))
