@@ -3,6 +3,7 @@ import {context} from "../contexts/NoteContext";
 import '../assets/css/search-note-container.css';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import LoaderComponent from './LoaderComponent';
 
 function componentDidMount() {
     document.querySelectorAll('#entrypoint input, #entrypoint textarea').forEach((element) => {
@@ -14,17 +15,11 @@ function componentDidMount() {
 
 function SearchNoteContainer(props) {
     const [editorValue, setEditorValue] = useState('');
-    const {findNote, updateNote} = useContext(context)
+    const {findNote, updateNote, showLoader} = useContext(context)
     const editorRef = useRef(null);
     const editorValueRef = useRef('');
     const handleChange = (value) => {
         setEditorValue(value);
-    };
-
-    const handlePaste = () => {
-        const editor = editorRef.current.getEditor();
-        const range = editor.getSelection();
-        editor.setSelection(range.index + 1, range.length);
     };
 
     useEffect(() => {
@@ -36,9 +31,7 @@ function SearchNoteContainer(props) {
         // This function will be called when the component is mounted
         return () => {
             // This function will be called when the component is about to unmount
-            console.log(editorValueRef.current)
             updateNote(editorValueRef.current);
-            console.log('Component is unmounting');
         };
     }, []);
 
@@ -53,8 +46,10 @@ function SearchNoteContainer(props) {
                     setDescription(e.target.value);
                 }}/>
 
-                <div style={{ height: '400px', overflowY: 'auto', overflowX: 'auto', width: '100%' , display: 'none', color: 'white'}} id={'quill-editor-wrapper'}>
-                    <ReactQuill id={'quill-editor'} value={editorValue} onChange={handleChange} onPaste={handlePaste}  ref={editorRef} />
+                {showLoader && <LoaderComponent />}
+
+                <div style={{ maxHeight: '90%', overflowY: 'auto', overflowX: 'auto', width: '100%' , display: 'none', color: 'white', marginBottom: '10px' }} id={'quill-editor-wrapper'}>
+                    <ReactQuill id={'quill-editor'} value={editorValue} onChange={handleChange} ref={editorRef} />
                     <input type="hidden" id={'note-id'}/>
                 </div>
             </div>

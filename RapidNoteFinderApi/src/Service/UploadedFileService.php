@@ -4,6 +4,7 @@ namespace App\Service;
 
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\Request;
 
 class UploadedFileService
 {
@@ -11,17 +12,19 @@ class UploadedFileService
     {
 
     }
-    //TODO: instead of 127.0.0.1:8000 needs to be more dynamic and use server name.
-    //TODO: WHEN we updating we have to is there a file which starts with data:image or something like that. and also check which files is does not exist too
+    //TODO: upgrade your system with cache usage.
     public function handleImage($imageDataUri) :string
     {
+        $request = Request::createFromGlobals();
+        $host = $request->getHost();
+        $port = $request->getPort();
         $base64Image = substr($imageDataUri, strpos($imageDataUri, ',') + 1);
         $imageData = base64_decode($base64Image);
         $uniqId = uniqid();
         $filePath = $this->parameterBag->get('public_storage_path') . $uniqId . '.png';
 
         file_put_contents($filePath, $imageData);
-        return "http://127.0.0.1:8000/storage/$uniqId.png";
+        return "http://$host:$port/storage/$uniqId.png";
     }
     public function handleNoteContent(string $content) : string
     {
@@ -60,17 +63,11 @@ class UploadedFileService
     private function extractImageSourcesFromContent(string $content, string $alias="data:image"): array
     {
         $imageSources = array();
-
-        // Match all img tags and extract src attributes
-        // preg_match_all('/<img[^>]+src=["\']([^1"\']+)["\'][^>]*>/i', $content, $matches);
-        //preg_match_all('/<img[^>]+src=["\']([^1"\']*' . $alias . '[^"\']+)["\'][^>]*>/i', $content, $matches);
-
         preg_match_all('/<img[^>]+src=["\'](?=.*' . $alias .')([^"\']+)["\'][^>]*>/i', $content, $matches);
 
-
-        // Extract src attributes from the matches
         foreach ($matches[1] as $src) {
-            $imageSources[] = $src;
+            if(preg_match("/$alias/", $src))
+                $imageSources[] = $src;
         }
 
         return $imageSources;

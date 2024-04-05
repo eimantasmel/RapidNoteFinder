@@ -12,6 +12,7 @@ class NoteContext extends Component {
             showBox: false,
             showCreateCont: false,
             showSearchCont: true,
+            showLoader: false,
             lastKeyDownContainer: {lastKeyDown: null}
         }
     }
@@ -53,15 +54,25 @@ class NoteContext extends Component {
 
     async createNote(content, description) {
         const associate = await getAssociation() ?? '';
+        this.setState({
+            showLoader: true
+        });
         axios.post('http://127.0.0.1:8000/api/note/add', {
             content,
             description,
             associate,
         })
         .then(response => {
-
+            this.setState({
+                showLoader: false
+            });
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            console.log(err)
+            this.setState({
+                showLoader: false
+            });
+        })
     }
 
     updateNote(content) {
@@ -73,6 +84,9 @@ class NoteContext extends Component {
     }
 
     async findNote(description, setEditorValue) {
+        this.setState({
+            showLoader: true
+        });
         const associate = await getAssociation() ?? '';
         axios.get(`http://127.0.0.1:8000/api/note/find`, {
             params: {
@@ -81,13 +95,22 @@ class NoteContext extends Component {
             }
         })
         .then(response => {
+            this.setState({
+                showLoader: false
+            });
             const {content, noteId } = response.data;
             document.querySelector('.ext-container #quill-editor-wrapper').style.display = 'block';
             const noteIdElement = document.querySelector('#quill-editor-wrapper #note-id')
             noteIdElement.dataset.noteId = noteId;
+            console.log(content);
             setEditorValue(content);
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            console.log(err);
+            this.setState({
+                showLoader: false
+            });
+        })
     }
 
     render() {
