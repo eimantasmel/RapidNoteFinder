@@ -15,11 +15,13 @@ function componentDidMount() {
 
 function SearchNoteContainer(props) {
     const [editorValue, setEditorValue] = useState('');
+    const [isUpdated, setIsUpdated] = useState(false);
     const {findNote, updateNote, showLoader} = useContext(context)
     const editorRef = useRef(null);
     const editorValueRef = useRef('');
     const handleChange = (value) => {
         setEditorValue(value);
+        setIsUpdated(true);
     };
 
     useEffect(() => {
@@ -31,9 +33,10 @@ function SearchNoteContainer(props) {
         // This function will be called when the component is mounted
         return () => {
             // This function will be called when the component is about to unmount
-            updateNote(editorValueRef.current);
+            if(isUpdated)
+                updateNote(editorValueRef.current);
         };
-    }, []);
+    }, [isUpdated]);
 
     const [description, setDescription] = useState('');
         return (

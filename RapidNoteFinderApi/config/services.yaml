@@ -21,6 +21,10 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
+    Symfony\Component\Cache\Adapter\ApcuAdapter: ~
+    Symfony\Component\Cache\Adapter\FilesystemAdapter:
+        arguments:
+            - 'app.cache'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

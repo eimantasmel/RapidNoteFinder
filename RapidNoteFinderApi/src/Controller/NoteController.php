@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Note;
 use App\Repository\NoteRepository;
+use App\Service\RedisCacheService;
 use App\Service\UploadedFileService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,7 +19,8 @@ class NoteController extends AbstractController
     public function __construct(
         private NoteRepository $noteRepository,
         private EntityManagerInterface $em,
-        private UploadedFileService $fileService
+        private UploadedFileService $fileService,
+        private RedisCacheService $cache
     ) {
     }
 
@@ -44,6 +46,7 @@ class NoteController extends AbstractController
             $updatedContent = $this->fileService->handleNoteContent($data->content);
             $this->fileService->removeChangedImages($updatedContent, $note->getContent());
             $note = $this->noteRepository->updateNote($note, $updatedContent);
+            $this->cache->deleteItems($note->getAssociate());
             return $this->json($note->toArray());
         } catch (\Exception $e) {
             return $this->json(['error' => $e->getMessage()], $e->getCode());
@@ -66,7 +69,4 @@ class NoteController extends AbstractController
             return $this->json(['error' => $e->getMessage()], $e->getCode());
         }
     }
-
-
-
 }

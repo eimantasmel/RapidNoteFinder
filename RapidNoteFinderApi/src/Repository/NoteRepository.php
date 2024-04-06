@@ -3,9 +3,11 @@
 namespace App\Repository;
 
 use App\Entity\Note;
+use App\Service\RedisCacheService;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 /**
  * @extends ServiceEntityRepository<Note>
@@ -17,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class NoteRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, private RedisCacheService $cache)
     {
         parent::__construct($registry, Note::class);
     }
@@ -54,7 +56,11 @@ class NoteRepository extends ServiceEntityRepository
 
     public function findNoteByDescription(string $description, string $associate) : ?Note
     {
-        return $this->createQueryBuilder('n')
+        $note = $this->cache->getItem($associate, $description);
+        if($note)
+            return $note;
+
+        $note = $this->createQueryBuilder('n')
             ->where("n.description like :val")
             ->andWhere('n.associate = :val2')
             ->setParameter('val', '%' . $description . '%')
@@ -62,6 +68,10 @@ class NoteRepository extends ServiceEntityRepository
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
+
+
+        $this->cache->addItem($associate, $description, $note);
+        return $note;
     }
 
 //    /**
