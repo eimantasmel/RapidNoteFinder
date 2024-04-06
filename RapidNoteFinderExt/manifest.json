@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "RapidNote Finder",
+  "version": "1.0.0",
+  "description": "It quickly will found your added notes",
+  "permissions": ["storage"],
+  "icons": {
+    "16": "./assets/img/icon.png",
+    "48": "./assets/img/icon.png",
+    "128": "./assets/img/icon.png"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "js": ["./dist/content_bundle.js"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["assets/packages/summernote-bs4.min.js"],
+      "matches": ["*://*/*"]
+    },
+    {
+      "resources": ["assets/packages/jquery-3.6.0.min.js"],
+      "matches": ["*://*/*"]
+    }
+  ]
+}
+
+
