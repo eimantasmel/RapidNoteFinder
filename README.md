@@ -4,6 +4,9 @@
 
 RapidNoteFinder is a browser extension that allows users to create custom notes and easily retrieve them from any website. With RapidNoteFinder, you can seamlessly take notes while browsing the web without interrupting your workflow.
 
+This is the fragment of the extension
+![RapidNoteFinder fragment](https://i.postimg.cc/3RHrWnQX/6611d2de5ee16.png)
+
 ## Features
 
 - Create custom notes directly from any webpage.
