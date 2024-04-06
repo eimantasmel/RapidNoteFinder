@@ -8,4 +8,5 @@
 /public/storage/
 /var/
 /vendor/
+/.env
 ###< symfony/framework-bundle ###
