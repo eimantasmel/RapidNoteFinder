@@ -7,7 +7,6 @@ use App\Service\RedisCacheService;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 /**
  * @extends ServiceEntityRepository<Note>
@@ -35,6 +34,7 @@ class NoteRepository extends ServiceEntityRepository
             ->setContent($content)
             ->setAssociate($associate)
             ->setCreatedAt(new \DateTimeImmutable());
+
 
         $this->getEntityManager()->persist($note);
         $this->getEntityManager()->flush();
@@ -73,29 +73,4 @@ class NoteRepository extends ServiceEntityRepository
         $this->cache->addItem($associate, $description, $note);
         return $note;
     }
-
-//    /**
-//     * @return Note[] Returns an array of Note objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('n')
-//            ->andWhere('n.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('n.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Note
-//    {
-//        return $this->createQueryBuilder('n')
-//            ->andWhere('n.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

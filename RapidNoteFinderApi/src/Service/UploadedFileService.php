@@ -3,7 +3,6 @@
 namespace App\Service;
 
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 
 class UploadedFileService
@@ -12,7 +11,7 @@ class UploadedFileService
     {
 
     }
-    //TODO: upgrade your system with cache usage.
+
     public function handleImage($imageDataUri) :string
     {
         $request = Request::createFromGlobals();
@@ -24,7 +23,11 @@ class UploadedFileService
         $filePath = $this->parameterBag->get('public_storage_path') . $uniqId . '.png';
 
         file_put_contents($filePath, $imageData);
-        return "http://$host:$port/storage/$uniqId.png";
+
+        if ($_ENV['APP_ENV'] === 'dev') 
+            return "http://$host:$port/public/storage/$uniqId.png";
+
+        return "https://$host/public/storage/$uniqId.png";
     }
     public function handleNoteContent(string $content) : string
     {
@@ -81,10 +84,7 @@ class UploadedFileService
     private function updateNoteContent(string $content, array $imageSources): string
     {
         // Match all img tags in the content
-        //preg_match_all('/<img[^>]+>/i', $content, $matches);
         preg_match_all('/<img[^>]+src=["\']([^1"\']*data:image[^"\']+)["\'][^>]*>/i', $content, $matches);
-
-
         // Replace src attributes with new values
         foreach ($matches[0] as $index => $imgTag) {
             // Match src attribute within the img tag
@@ -92,11 +92,6 @@ class UploadedFileService
             if (isset($srcMatch[1]) && isset($imageSources[$index])) {
                 // Replace src attribute value with the new source
                 $newImgTag = str_replace($srcMatch[1], $imageSources[$index], $imgTag);
-                // Replace original img tag with updated img tag
-               // $content = str_replace($imgTag, $newImgTag, $content);
-
-//                $content = preg_replace('!#@abc#!' . $imgTag .'!#@abc#!', $newImgTag, $content, 1);
-
                 $pos = strpos($content, $imgTag);
                 if ($pos !== false)
                     $content = substr_replace($content, $newImgTag, $pos, strlen($imgTag));
