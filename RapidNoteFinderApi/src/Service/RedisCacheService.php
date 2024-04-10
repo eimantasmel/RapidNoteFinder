@@ -3,10 +3,7 @@
 namespace App\Service;
 
 
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
-use Symfony\Component\Cache\Adapter\ApcuAdapter;
-use Symfony\Component\Cache\CacheItem;
 
 class RedisCacheService
 {

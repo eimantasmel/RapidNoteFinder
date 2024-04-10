@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import doubleClickEvent from "../scripts/doubleClick";
 import axios from 'axios';
 import getAssociation from "../scripts/getAssociation";
+import host from '../scripts/apiHost'; 
+
 export const context = React.createContext();
 class NoteContext extends Component {
 
@@ -57,30 +59,41 @@ class NoteContext extends Component {
         this.setState({
             showLoader: true
         });
-        axios.post('http://127.0.0.1:8000/api/note/add', {
-            content,
-            description,
-            associate,
+        fetch(`${host}/api/note/add`, {
+            method: 'post',
+            body: JSON.stringify({
+                content,
+                description,
+                associate,
+            }),
         })
         .then(response => {
+            return response.json();
+        })
+        .then(data => {
             this.setState({
                 showLoader: false
             });
         })
-        .catch(err => {
-            console.log(err)
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
             this.setState({
                 showLoader: false
             });
-        })
+        });
     }
 
     updateNote(content) {
         const noteId = document.getElementById('note-id').dataset.noteId;
-        axios.put(`http://127.0.0.1:8000/api/note/update/${noteId}`, {
-            content,
-        })
-        .catch(err => console.log(err))
+        fetch(`${host}/api/note/update/${noteId}`, {
+            method: 'post',
+            body: JSON.stringify({
+              content: content
+            })
+          })
+          .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+          });
     }
 
     async findNote(description, setEditorValue) {
@@ -88,7 +101,7 @@ class NoteContext extends Component {
             showLoader: true
         });
         const associate = await getAssociation() ?? '';
-        axios.get(`http://127.0.0.1:8000/api/note/find`, {
+        axios.get(`${host}/api/note/find`, {
             params: {
                 description: description,
                 associate: associate
@@ -102,7 +115,6 @@ class NoteContext extends Component {
             document.querySelector('.ext-container #quill-editor-wrapper').style.display = 'block';
             const noteIdElement = document.querySelector('#quill-editor-wrapper #note-id')
             noteIdElement.dataset.noteId = noteId;
-            console.log(content);
             setEditorValue(content);
         })
         .catch(err => {
