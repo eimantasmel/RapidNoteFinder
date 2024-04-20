@@ -38,7 +38,7 @@ class NoteController extends AbstractController
         }
     }
 
-    #[Route('/note/update/{id}', name: 'update_note', methods: 'PUT', priority: 1)]
+    #[Route('/note/update/{id}', name: 'update_note', methods: 'POST', priority: 1)]
     public function updateNote(Request $request, Note $note): JsonResponse
     {
         $data = json_decode($request->getContent());
