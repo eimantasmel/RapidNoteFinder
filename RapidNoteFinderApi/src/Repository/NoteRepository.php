@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class NoteRepository extends ServiceEntityRepository
 {
+    private const MAX_RESULTS_COUNT = 20;
     public function __construct(ManagerRegistry $registry, private RedisCacheService $cache)
     {
         parent::__construct($registry, Note::class);
@@ -54,23 +55,40 @@ class NoteRepository extends ServiceEntityRepository
         return $note;
     }
 
-    public function findNoteByDescription(string $description, string $associate) : ?Note
+    public function findNoteByDescription(string $description, string $associate) : array
     {
-        $note = $this->cache->getItem($associate, $description);
-        if($note)
-            return $note;
+        $notes = $this->cache->getItem($associate, $description);
+        if($notes)
+            return $notes;
 
         $note = $this->createQueryBuilder('n')
             ->where("n.description like :val")
             ->andWhere('n.associate = :val2')
             ->setParameter('val', '%' . $description . '%')
             ->setParameter('val2', $associate )
-            ->setMaxResults(1)
+            ->setMaxResults(self::MAX_RESULTS_COUNT)
             ->getQuery()
-            ->getOneOrNullResult();
-
+            ->getArrayResult();
 
         $this->cache->addItem($associate, $description, $note);
         return $note;
+    }
+
+    public function findLatestNotes(string $associate) : array 
+    {
+        $notes = $this->cache->getItem($associate, "");
+        if($notes)
+            return $notes;
+
+        $notes = $this->createQueryBuilder('n')
+            ->where('n.associate = :val')
+            ->orderBy('n.created_at', 'desc')
+            ->setParameter('val', $associate )
+            ->getQuery()
+            ->setMaxResults(self::MAX_RESULTS_COUNT)
+            ->getArrayResult();
+
+        $this->cache->addItem($associate, "", $notes);
+        return $notes;
     }
 }

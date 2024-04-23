@@ -39,7 +39,9 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
 
   node-service:
-    image: node:latest
+    build:
+      context: .
+      dockerfile: ./Dockernode
     ports:
       - "3000:3000"
     volumes:

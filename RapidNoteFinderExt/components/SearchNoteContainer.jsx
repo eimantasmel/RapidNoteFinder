@@ -10,13 +10,14 @@ function componentDidMount() {
         element.addEventListener('mouseover', (e) => {
             e.target.focus();
         })
-    });
+    });    
 }
 
 function SearchNoteContainer(props) {
     const [editorValue, setEditorValue] = useState('');
     const [isUpdated, setIsUpdated] = useState(false);
-    const {findNote, updateNote, showLoader} = useContext(context)
+    const [description, setDescription] = useState('');
+    const {findNote, updateNote, showLoader, changeNote} = useContext(context)
     const editorRef = useRef(null);
     const editorValueRef = useRef('');
     const handleChange = (value) => {
@@ -24,21 +25,39 @@ function SearchNoteContainer(props) {
         setIsUpdated(true);
     };
 
+    const backArrowListener = (e) => {
+        changeNote(setEditorValue, setDescription, 'back');
+    };
+    const forwardArrowListener = (e) => {
+        changeNote(setEditorValue, setDescription);
+    };
+
+
+
     useEffect(() => {
         componentDidMount();
         editorValueRef.current = editorValue;
+        document.querySelector('.MuiButtonBase-root.MuiIconButton-root[aria-label="back"]').addEventListener('click', forwardArrowListener);
+        document.querySelector('.MuiButtonBase-root.MuiIconButton-root[aria-label="forward"]').addEventListener('click', backArrowListener);
+        
+        // This will be called when the component is rerendered
+        return () => {
+            if(document.querySelector('.MuiButtonBase-root.MuiIconButton-root[aria-label="back"]'))
+            {
+                document.querySelector('.MuiButtonBase-root.MuiIconButton-root[aria-label="back"]').removeEventListener('click', forwardArrowListener);
+                document.querySelector('.MuiButtonBase-root.MuiIconButton-root[aria-label="forward"]').removeEventListener('click', backArrowListener);
+            }
+        };
     })
 
     useLayoutEffect(() => {
-        // This function will be called when the component is mounted
+        // This will be called when the component is unmounted
         return () => {
-            // This function will be called when the component is about to unmount
             if(isUpdated)
                 updateNote(editorValueRef.current);
         };
     }, [isUpdated]);
 
-    const [description, setDescription] = useState('');
         return (
             <div className={'ext-container'}>
                 <input type="text" value={description} className={'description'} placeholder={'Describe your note'} onKeyUp={(e) => {

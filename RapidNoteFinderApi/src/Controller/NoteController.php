@@ -58,11 +58,16 @@ class NoteController extends AbstractController
     {
         $description = $request->query->get('description');
         $associate = $request->query->get('associate');
+        $notes = [];
         try {
-            $note = $this->noteRepository
+            if(empty($description))
+                $notes = $this->noteRepository
+                ->findLatestNotes($associate);
+            else 
+            $notes = $this->noteRepository
                 ->findNoteByDescription($description, $associate);
-            if($note)
-                return $this->json($note->toArray());
+            if($notes)
+                return $this->json($notes);
             else
                 return $this->json(['error' => 'note not found'], Response::HTTP_BAD_REQUEST);
         } catch (\Exception $e) {
