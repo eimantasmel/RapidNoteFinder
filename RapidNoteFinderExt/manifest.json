@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "RapidNote Finder",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "It quickly will found your added notes",
   "permissions": ["storage"],
   "icons": {

@@ -8,3 +8,16 @@
     left: 50%;
     z-index: 1000000000;
 }
+
+#interactive-box  .MuiButtonBase-root.MuiIconButton-root{
+    position: absolute;
+    top: 50%;
+}
+
+#interactive-box .MuiButtonBase-root.MuiIconButton-root[aria-label="forward"] {
+    right: 0%;
+}
+
+#interactive-box  .MuiButtonBase-root.MuiIconButton-root .MuiSvgIcon-root {
+    font-size: 50px;
+}

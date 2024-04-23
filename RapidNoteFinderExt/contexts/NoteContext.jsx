@@ -15,6 +15,8 @@ class NoteContext extends Component {
             showCreateCont: false,
             showSearchCont: true,
             showLoader: false,
+            notes: [],
+            currentNoteIndex: 0,
             lastKeyDownContainer: {lastKeyDown: null}
         }
     }
@@ -109,13 +111,19 @@ class NoteContext extends Component {
         })
         .then(response => {
             this.setState({
-                showLoader: false
+                showLoader: false,
             });
-            const {content, noteId } = response.data;
-            document.querySelector('.ext-container #quill-editor-wrapper').style.display = 'block';
-            const noteIdElement = document.querySelector('#quill-editor-wrapper #note-id')
-            noteIdElement.dataset.noteId = noteId;
-            setEditorValue(content);
+            if(response.data)
+            {
+                const {content, id } = response.data[0];
+                document.querySelector('.ext-container #quill-editor-wrapper').style.display = 'block';
+                const noteIdElement = document.querySelector('#quill-editor-wrapper #note-id')
+                noteIdElement.dataset.noteId = id;
+                setEditorValue(content);
+                this.setState({
+                    notes: response.data
+                });
+            }
         })
         .catch(err => {
             console.log(err);
@@ -123,6 +131,35 @@ class NoteContext extends Component {
                 showLoader: false
             });
         })
+    }
+
+    changeNote(setEditorValue, setDescription, move="forward") {
+        if(this.state.notes.length == 0 || this.state.notes.length == 1) return;
+        if (move === 'forward') {
+            this.setState((prevState) => ({
+                currentNoteIndex: prevState.currentNoteIndex === this.state.notes.length - 1 ? 0 : prevState.currentNoteIndex + 1
+            }), () => {
+                if(document.querySelector('#quill-editor-wrapper #note-id'))
+                {
+                    setEditorValue(this.state.notes[this.state.currentNoteIndex].content);
+                    const noteIdElement = document.querySelector('#quill-editor-wrapper #note-id')
+                    noteIdElement.dataset.noteId = this.state.notes[this.state.currentNoteIndex].id;
+                    setDescription(this.state.notes[this.state.currentNoteIndex].description);
+                }
+            });
+        } else {
+            this.setState((prevState) => ({
+                currentNoteIndex: prevState.currentNoteIndex === 0 ? this.state.notes.length - 1 : prevState.currentNoteIndex - 1
+            }), () => {
+                if(document.querySelector('#quill-editor-wrapper #note-id'))
+                {
+                    setEditorValue(this.state.notes[this.state.currentNoteIndex].content);
+                    const noteIdElement = document.querySelector('#quill-editor-wrapper #note-id')
+                    noteIdElement.dataset.noteId = this.state.notes[this.state.currentNoteIndex].id;
+                    setDescription(this.state.notes[this.state.currentNoteIndex].description);
+                }
+            });
+        }
     }
 
     render() {
@@ -134,6 +171,7 @@ class NoteContext extends Component {
             createNote: this.createNote.bind(this),
             findNote: this.findNote.bind(this),
             updateNote: this.updateNote.bind(this),
+            changeNote: this.changeNote.bind(this),
         }}>
             {this.props.children}
         </context.Provider>
