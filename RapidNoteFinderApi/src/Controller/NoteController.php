@@ -32,6 +32,8 @@ class NoteController extends AbstractController
             $updatedContent = $this->fileService->handleNoteContent($data->content);
             $note = $this->noteRepository
                 ->addNote($data->description, $updatedContent, $data->associate);
+
+            $this->cache->deleteItems($note->getAssociate());
             return $this->json($note->toArray());
         } catch (\Exception $e) {
             return $this->json(['error' => $e->getMessage()], $e->getCode());
