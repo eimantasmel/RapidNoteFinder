@@ -26,7 +26,7 @@ class NoteRepository extends ServiceEntityRepository
 
     public function addNote(string $description, string $content, string $associate) : Note
     {
-        if(empty($description) || empty($content) || empty($associate))
+        if(empty($content) || empty($associate))
         {
             throw new \Exception('Description, content or associate cannot be empty', Response::HTTP_BAD_REQUEST);
         }
