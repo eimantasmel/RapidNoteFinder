@@ -63,6 +63,9 @@ class NoteContext extends Component {
         });
         fetch(`${host}/api/note/add`, {
             method: 'post',
+              headers: {
+                'ngrok-skip-browser-warning': 'true'  // Skip the confirmation page
+              },
             body: JSON.stringify({
                 content,
                 description,
@@ -89,6 +92,9 @@ class NoteContext extends Component {
         const noteId = document.getElementById('note-id').dataset.noteId;
         fetch(`${host}/api/note/update/${noteId}`, {
             method: 'post',
+            headers: {
+                'ngrok-skip-browser-warning': 'true'  // This header tells ngrok to skip the confirmation page
+            },
             body: JSON.stringify({
               content: content
             })
@@ -104,6 +110,9 @@ class NoteContext extends Component {
         });
         const associate = await getAssociation() ?? '';
         axios.get(`${host}/api/note/find`, {
+          headers: {
+            'ngrok-skip-browser-warning': 'true'  // Skip the confirmation page
+          },
             params: {
                 description: description,
                 associate: associate

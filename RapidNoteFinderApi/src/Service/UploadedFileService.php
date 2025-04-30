@@ -28,7 +28,7 @@ class UploadedFileService
             return "http://$host/storage/$uniqId.png";
         else if($_ENV['APP_ENV'] === 'dev')
             return "http://$host:$port/storage/$uniqId.png";
-        return "https://$host/public/storage/$uniqId.png";
+        return "http://$host/public/storage/$uniqId.png";
     }
     public function handleNoteContent(string $content) : string
     {
